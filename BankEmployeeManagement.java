@@ -6,54 +6,31 @@
 
 package bankemployeemanagement;
 
-import bankemployeemanagement.model.Employee;
-import bankemployeemanagement.model.EmployeeModel;
-import bankemployeemanagement.model.EmployeeSorter;
-import bankemployeemanagement.model.EmployeeTree;
+import bankemployeemanagement.controller.EmployeeController;
+import bankemployeemanagement.view.EmployeeView;
 
 public class BankEmployeeManagement {
 
     public static void main(String[] args) {
 
-        EmployeeModel model = new EmployeeModel();
-        EmployeeSorter sorter = new EmployeeSorter();
-        EmployeeTree tree = new EmployeeTree();
+        EmployeeController controller = new EmployeeController();
+        EmployeeView view = new EmployeeView();
 
-        // read the employee file
-        if (model.readFile("data/Applicants_Form.txt")) {
+        // load the employee file
+        if (controller.loadEmployees()) {
 
-            System.out.println("File loaded successfully");
+            view.showMessage("File loaded successfully");
 
-            // sort employees by name
-            sorter.mergeSort(model.getEmployees());
+            // sort and show employees
+            controller.sortEmployees();
+            view.showEmployees(controller.getModel().getEmployees());
 
-            System.out.println("\nFirst 20 employees:");
-
-            for (int i = 0; i < 20 &&
-                    i < model.getEmployees().size(); i++) {
-
-                System.out.println((i + 1) + ". "
-                        + model.getEmployees().get(i).getName());
-            }
-
-            // add all employees to the tree
-            for (Employee employee : model.getEmployees()) {
-                tree.insert(employee);
-            }
-
-            // show the binary tree
-            System.out.println("\nBinary Tree:");
-            tree.displayTree();
-
-            // show the total and height
-            System.out.println("\nTotal employees: "
-                    + tree.getTotal());
-
-            System.out.println("Tree levels: "
-                    + tree.getHeight());
+            // build and show the tree
+            controller.buildTree();
+            view.showTree(controller.getTree());
 
         } else {
-            System.out.println("File not found");
+            view.showMessage("File not found");
         }
     }
 }
