@@ -29,6 +29,14 @@ public class BankEmployeeManagement {
             controller.buildTree();
             view.showTree(controller.getTree());
 
+            // search for an existing employee
+            view.showMessage("\nSearch test 1:");
+            view.showSearchResult(controller.searchEmployee("Mia Clark"));
+
+            // search for an employee that does not exist
+            view.showMessage("\nSearch test 2:");
+            view.showSearchResult(controller.searchEmployee("John Unknown"));
+
         } else {
             view.showMessage("File not found");
         }
